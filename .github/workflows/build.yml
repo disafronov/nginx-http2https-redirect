@@ -34,7 +34,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
     
-      - name: Read nginx version from file
+      - name: Read Nginx (unprivileged) version from file
         run: |
           NGINX_VERSION=$(cat .nginx-version)
           echo "NGINX_VERSION=$NGINX_VERSION" >> $GITHUB_ENV
