@@ -31,11 +31,11 @@ jobs:
         id: nginx-version
         with:
           image: nginxinc/nginx-unprivileged
-          tag: '^(.+).(.+).(.+)-alpine-slim$'
+          tag: '^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}-alpine-slim$'
 
       - name: Save latest Nginx (unprivileged) docker tag to file in repo
         run: |
-          NGINX_VERSION="$(echo ${{ steps.nginx-version.outputs.tag }}"
+          NGINX_VERSION="$(echo ${{ steps.nginx-version.outputs.tag }})"
           echo "$NGINX_VERSION" > .nginx-version
           echo "NGINX_VERSION=$NGINX_VERSION" >> $GITHUB_ENV
 
