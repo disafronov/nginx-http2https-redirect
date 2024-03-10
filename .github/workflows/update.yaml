@@ -1,0 +1,46 @@
+name: Update
+
+"on": 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+
+    steps:
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+
+      - name: Install jq
+        uses: dcarbone/install-jq-action@v2.1.0
+
+      - name: Get latest Nginx (unprivileged) docker tag
+        uses: ./.github/actions/get-latest-docker-tag
+        id: nginx-version
+        with:
+          image: nginxinc/nginx-unprivileged
+          tag: '^(.+).(.+).(.+)-alpine-slim$'
+
+      - name: Save latest Nginx (unprivileged) docker tag to file in repo
+        run: |
+          NGINX_VERSION="$(echo ${{ steps.nginx-version.outputs.tag }}"
+          echo "$NGINX_VERSION" > .nginx-version
+          echo "NGINX_VERSION=$NGINX_VERSION" >> $GITHUB_ENV
+
+      - name: Commit all changed files back to the repository
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Automated Update. Docker: ${{ env.NGINX_VERSION }}"
+          file_pattern: '.nginx-version'
