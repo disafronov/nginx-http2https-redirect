@@ -40,7 +40,7 @@ jobs:
           echo "NGINX_VERSION=$NGINX_VERSION" >> $GITHUB_ENV
 
       - name: Commit all changed files back to the repository
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Automated Update. Docker: ${{ env.NGINX_VERSION }}"
           file_pattern: '.nginx-version'
