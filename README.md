@@ -1,4 +1,4 @@
-docker-nginx-http2https-redirect
+nginx-http2https-redirect
 ===========================
 
 Inspired by <https://github.com/jamessharp/docker-nginx-https-redirect.git>
